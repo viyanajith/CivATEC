@@ -12,7 +12,8 @@ From the first log to the stars. Punch a tree, smelt iron, wire up solar panels,
 
 | Version | Name | |
 |---|---|---|
-| 1.0 | First Classic Update | out now: the main theme, mods (.zip, items, blocks, code, data edits), texture packs, bedrock, safe worlds (NS) |
+| 1.1 | The Rocket Engine Update | out now: the Dyptolote Infected, the electric shocker, Trymonite, the mech engine, the fusion reactor, the omega wire |
+| 1.0 | First Classic Update | out: the main theme, mods (.zip, items, blocks, code, data edits), texture packs, bedrock, safe worlds (NS) |
 | Beta 1.6 | Adventure Release | out: the story, the tribe, the Science Dome, the nuclear reactor, the battery compressor, caves, thirst |
 | Beta 1.5 | Food Release | out: farming, bread, the Grinder, Electric Oven, Harvester, Smart Porter, buckets, breeding |
 | Beta 1.4 | Terrain | out: sky limit 70, hills, huge mountains, long rivers, large oceans |

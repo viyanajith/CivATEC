@@ -73,6 +73,7 @@ Mac and Windows buttons the same day, and the ATEC.pck files were deleted from t
 | Beta 1.5 | Food Release | out, 2026-10-18: tall grass + seeds, hoe dirt, wheat/carrots, grinder, raw bread, electric oven + fire, harvester, smart porter, steady porters, bucket, breeding, ash, objectives on/off |
 | Beta 1.6 | Adventure Release | out, 2026-11-11: the story (tribe, map, bunker, drill flight, Science Dome, Nick and Palios, Pluto), coal generator, battery in/out sides, nuclear reactor, battery compressor + stacks, reinforced iron, launchpad + engine frame, the probe and the gigacoil, caves, thirst, smoother loading |
 | 1.0 | First Classic Update | out, 2026-11-12: the main theme (music/main_theme.wav, tools/make_ensemble.py), NS (newer-save copy check), mods (zip install, items/blocks, game code, data edits: newest installed wins), texture packs, bedrock floor (chunk format 3) |
+| 1.1 | The Rocket Engine Update | out, 2026-11-14: the Dyptolote (blue ore), Dyptolote Infected, electric shocker, decaying Trymonite, pusher/engine/mech engine under the frame, the infected destroyed, the fusion reactor (separator, deuterium, magnets, plasma chambers, fuel injector), the omega wire, the engine filled with 16,806,721,842 J; story respawns. The DMG was built plain (Finder automation was blocked; make_fancy_dmg.sh now carries on without the decorated window) |
 | 2.0 | (not named yet) | next: the login system |
 
 On the website: `title` in each `VERSIONS` entry, and `NEXT` for the version being worked on.
