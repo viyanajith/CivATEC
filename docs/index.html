@@ -140,6 +140,21 @@
   .card h3 { font-size: 16px; color: var(--leaf); margin-bottom: 6px; }
   .card p { font-size: 14px; color: var(--dim); }
 
+  .msg { display: none; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px; }
+  .msg p { color: var(--dim); font-size: 14px; margin-bottom: 12px; }
+  .msg input, .msg textarea {
+    width: 100%; margin-bottom: 10px; padding: 10px 12px; border-radius: 8px;
+    border: 1px solid var(--line); background: var(--bg); color: var(--text); font: inherit; font-size: 15px;
+  }
+  .msg textarea { min-height: 120px; resize: vertical; }
+  .msg button {
+    padding: 10px 22px; border: 0; border-radius: 8px; cursor: pointer; font: inherit; font-weight: 700;
+    background: var(--leaf); color: #10200a;
+  }
+  .msg button:disabled { opacity: .5; cursor: default; }
+  .msg .gotcha { position: absolute; left: -9999px; }
+  #msg-status { margin: 10px 0 0; min-height: 1em; }
+
   .ages { list-style: none; }
   .ages li {
     padding: 10px 16px; margin-bottom: 8px;
@@ -263,6 +278,18 @@
     </table>
   </section>
 
+  <section id="message">
+    <h2>&gt; send me a message</h2>
+    <form class="msg" id="msg-form">
+      <p>Played ATEC? Tell me what you liked, where you got stuck, or what I should add next. I read every message!</p>
+      <input name="name" maxlength="60" placeholder="Your name or nickname (optional)">
+      <textarea name="message" maxlength="2000" required placeholder="Your message"></textarea>
+      <input class="gotcha" name="_gotcha" tabindex="-1" autocomplete="off">
+      <button type="submit">Send</button>
+      <p id="msg-status"></p>
+    </form>
+  </section>
+
   <footer>
     Made with <a href="https://godotengine.org">Godot 4.7</a> by Viyan ·
     <a href="https://github.com/viyanajith/ATEC">ATEC on GitHub</a> ·
@@ -354,6 +381,34 @@
     document.getElementById("count").textContent = parts.join("  ·  ");
   }
   showCount();
+
+  // Messages (Formspree): the form sends to Formspree, which emails them on. Only this ID is in
+  // the code, never the email address. Empty = the message section stays hidden.
+  const FORM_ID = "";
+  const form = document.getElementById("msg-form");
+  if (FORM_ID) {
+    form.style.display = "block";
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const status = document.getElementById("msg-status");
+      const button = form.querySelector("button");
+      button.disabled = true;
+      status.textContent = "Sending...";
+      try {
+        const r = await fetch(`https://formspree.io/f/${FORM_ID}`, {
+          method: "POST", body: new FormData(form), headers: { Accept: "application/json" },
+        });
+        if (!r.ok) throw new Error();
+        form.reset();
+        status.textContent = "Thanks! Your message was sent. 🚀";
+      } catch (e) {
+        status.textContent = "Sorry, it didn't send. Try again in a minute.";
+      }
+      button.disabled = false;
+    });
+  } else {
+    document.getElementById("message").style.display = "none";
+  }
 
   select.addEventListener("change", () => show(select.value));
   show(VERSIONS[0].tag);
