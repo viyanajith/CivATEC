@@ -68,6 +68,7 @@
   .picker select:focus { outline: 2px solid var(--leaf); outline-offset: 1px; }
   .notes { width: 100%; color: var(--dim); font-size: 14px; }
   .next { width: 100%; font-size: 13px; color: var(--space); font-family: "Menlo", "Consolas", monospace; }
+  .count { margin: 14px 0 0; font-size: 13px; color: var(--dim); font-family: "Menlo", "Consolas", monospace; min-height: 1em; }
 
   .download {
     display: inline-block;
@@ -189,14 +190,15 @@
       <small id="win-size">free</small>
     </a>
     <div class="playrow">
-      <a class="download play" href="play/">
+      <a class="download play" id="play" href="play/">
         ▶ Play in your browser
         <small>Beta 1.6 · no download · lighter graphics</small>
-      </a><a class="download mobile" href="mobile/">
+      </a><a class="download mobile" id="mobile" href="mobile/">
         📱 Play on your phone
         <small>Beta 1.6 · free · touch controls · turn it sideways</small>
       </a>
     </div>
+    <p class="count" id="count"></p>
     <!-- DONATE BUTTON GOES HERE (Dad) -->
 
     <div class="guide">
@@ -314,6 +316,40 @@
   // What's being worked on now (not downloadable yet). Empty the name when there is none.
   const NEXT = { name: "2.0", title: "coming soon", about: "accounts and logging in" };
   document.getElementById("next").textContent = NEXT.name ? `Coming next: ${NEXT.name} — ${NEXT.title} (${NEXT.about})` : "";
+
+  // Counting the clicks (Abacus, a free CountAPI replacement: no account, anyone can read the
+  // numbers at COUNTER/get/NS/<key>). Keys: mac, win, play, mobile. Not counted when the page
+  // is opened from this computer (file://), so testing doesn't add clicks.
+  const COUNTER = "https://abacus.jasoncameron.dev";
+  const NS = "atec-viyanajith";
+  const online = location.protocol !== "file:";
+  for (const key of ["mac", "win", "play", "mobile"]) {
+    document.getElementById(key).addEventListener("click", () => {
+      if (online) fetch(`${COUNTER}/hit/${NS}/${key}`, { keepalive: true }).catch(() => {});
+    });
+  }
+
+  // The line under the buttons: real downloads (GitHub counts every release file it hands
+  // out) and how many times the browser and phone versions were opened.
+  async function showCount() {
+    const parts = [];
+    try {
+      const releases = await (await fetch("https://api.github.com/repos/viyanajith/ATEC/releases?per_page=100")).json();
+      let total = 0;
+      for (const r of releases) for (const a of r.assets || []) total += a.download_count || 0;
+      if (total > 0) parts.push(`⬇ ${total.toLocaleString()} downloads`);
+    } catch (e) {}
+    let plays = 0;
+    for (const key of ["play", "mobile"]) {
+      try {
+        const r = await fetch(`${COUNTER}/get/${NS}/${key}`);
+        if (r.ok) plays += (await r.json()).value || 0;
+      } catch (e) {}
+    }
+    if (plays > 0) parts.push(`▶ ${plays.toLocaleString()} plays in the browser`);
+    document.getElementById("count").textContent = parts.join("  ·  ");
+  }
+  showCount();
 
   select.addEventListener("change", () => show(select.value));
   show(VERSIONS[0].tag);
